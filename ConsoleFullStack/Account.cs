@@ -21,7 +21,7 @@ public abstract class Account
         this.balance = initialBalance;
     }
 
-    // Encapsulation: fields are private, exposed through properties
+    // fields are private, exposed through properties
     public string AccountNumber => accountNumber;
     public string OwnerUsername => ownerUsername;
     public decimal Balance
