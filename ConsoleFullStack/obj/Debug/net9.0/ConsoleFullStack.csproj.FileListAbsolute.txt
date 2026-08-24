@@ -1,0 +1,14 @@
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\obj\Debug\net9.0\ConsoleFullStack.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\obj\Debug\net9.0\ConsoleFullStack.AssemblyInfoInputs.cache
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\obj\Debug\net9.0\ConsoleFullStack.AssemblyInfo.cs
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\obj\Debug\net9.0\ConsoleFullStack.csproj.CoreCompileInputs.cache
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\bin\Debug\net9.0\ConsoleFullStack.exe
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\bin\Debug\net9.0\ConsoleFullStack.deps.json
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\bin\Debug\net9.0\ConsoleFullStack.runtimeconfig.json
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\bin\Debug\net9.0\ConsoleFullStack.dll
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\bin\Debug\net9.0\ConsoleFullStack.pdb
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\obj\Debug\net9.0\ConsoleFullStack.dll
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\obj\Debug\net9.0\refint\ConsoleFullStack.dll
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\obj\Debug\net9.0\ConsoleFullStack.pdb
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\obj\Debug\net9.0\ConsoleFullStack.genruntimeconfig.cache
+c:\Users\usf23\Projects\FullStack\ConsoleFullStack\obj\Debug\net9.0\ref\ConsoleFullStack.dll
