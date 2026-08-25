@@ -6,35 +6,36 @@ namespace BankApi.Controllers;
 [Route("api/v1/[controller]")]
 public class CustomersController : ControllerBase
 {
-    private readonly Bank _bank;
+    private readonly ICustomerRepository _customerRepository;
 
-    public CustomersController(Bank bank)
+    public CustomersController(ICustomerRepository customerRepository)
     {
-        _bank = bank;
+        _customerRepository = customerRepository;
     }
 
     [HttpGet]
-    public IActionResult GetCustomers()
+    public async Task<IActionResult> GetCustomers()
     {
-        List<CustomerSummary> customers = _bank.GetAllUsers()
-            .OfType<Customer>()
+        List<CustomerDocument> customers = await _customerRepository.GetAllAsync();
+
+        List<CustomerSummary> result = customers
             .Select(c => new CustomerSummary
             {
                 Username = c.Username,
-                AccountNumbers = c.Accounts.Select(a => a.AccountNumber).ToList()
+                AccountNumbers = c.AccountNumbers
             })
             .ToList();
 
-        return Ok(customers);
+        return Ok(result);
     }
 
     // GET /api/v1/customers/{username}
     [HttpGet("{username}")]
-    public IActionResult GetCustomerByUsername(string username)
+    public async Task<IActionResult> GetCustomerByUsername(string username)
     {
-        User user = _bank.FindUser(username);
+        CustomerDocument customer = await _customerRepository.GetByUsernameAsync(username);
 
-        if (user is not Customer customer)
+        if (customer == null)
         {
             return NotFound($"No customer found with username '{username}'.");
         }
@@ -42,7 +43,7 @@ public class CustomersController : ControllerBase
         var summary = new CustomerSummary
         {
             Username = customer.Username,
-            AccountNumbers = customer.Accounts.Select(a => a.AccountNumber).ToList()
+            AccountNumbers = customer.AccountNumbers
         };
 
         return Ok(summary);
@@ -50,28 +51,34 @@ public class CustomersController : ControllerBase
 
     // POST /api/v1/customers
     [HttpPost]
-    public IActionResult CreateCustomer([FromBody] CreateCustomerRequest request)
+    public async Task<IActionResult> CreateCustomer([FromBody] CreateCustomerRequest request)
     {
         if (request == null || string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
         {
             return BadRequest("Username and password are required.");
         }
 
-        if (_bank.FindUser(request.Username) != null)
+        CustomerDocument existing = await _customerRepository.GetByUsernameAsync(request.Username);
+        if (existing != null)
         {
             return Conflict($"A user with username '{request.Username}' already exists.");
         }
 
-        var customer = new Customer(request.Username, request.Password);
-        _bank.AddUser(customer);
+        var customer = new CustomerDocument
+        {
+            Username = request.Username,
+            Password = request.Password,
+            AccountNumbers = new List<string>()
+        };
+
+        await _customerRepository.CreateAsync(customer);
 
         var summary = new CustomerSummary
         {
             Username = customer.Username,
-            AccountNumbers = new List<string>()
+            AccountNumbers = customer.AccountNumbers
         };
 
-        // 201 Created, with a Location header pointing at GET /api/v1/customers/{username}
         return CreatedAtAction(nameof(GetCustomerByUsername), new { username = customer.Username }, summary);
     }
 }
