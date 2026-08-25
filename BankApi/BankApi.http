@@ -23,3 +23,47 @@ Content-Type: application/json
 GET {{BankApi_HostAddress}}/api/v1/customers
 
 ###
+
+GET {{BankApi_HostAddress}}/api/v1/customers/jsmith
+
+###
+
+GET {{BankApi_HostAddress}}/api/v1/customers/nobody
+
+###
+
+POST {{BankApi_HostAddress}}/api/v1/customers
+Content-Type: application/json
+
+{
+  "username": "tnewuser",
+  "password": "hunter2"
+}
+
+###
+
+POST {{BankApi_HostAddress}}/api/v1/customers
+Content-Type: application/json
+
+{
+  "username": "jsmith",
+  "password": "whatever"
+}
+
+###
+
+GET {{BankApi_HostAddress}}/api/v1/accounts
+
+###
+
+GET {{BankApi_HostAddress}}/api/v1/accounts?minBalance=600
+
+###
+
+GET {{BankApi_HostAddress}}/api/v1/accounts/customer/jsmith
+
+###
+
+GET {{BankApi_HostAddress}}/api/v1/accounts/customer/ghost
+
+###
