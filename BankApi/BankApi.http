@@ -1,0 +1,25 @@
+@BankApi_HostAddress = http://localhost:5167
+
+POST {{BankApi_HostAddress}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "jsmith",
+  "password": "pass123"
+}
+
+###
+
+POST {{BankApi_HostAddress}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "jsmith",
+  "password": "wrongpassword"
+}
+
+###
+
+GET {{BankApi_HostAddress}}/api/v1/customers
+
+###
