@@ -6,20 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi();
 
 // AddSingleton ensures ASP.NET Core creates
 // it once and reuses that same instance for every request.
-// Bank stays registered/seeded here because AuthController still runs
-// against it — login/Admin haven't moved to MongoDB yet, that's a
-// deliberately separate next step (see the session recap).
+
 builder.Services.AddSingleton<Bank>();
 
 // --- MongoDB wiring ---
-// Reads MongoDb:ConnectionString from configuration — locally that comes
-// from dotnet user-secrets (never from appsettings.json), so the real
-// Atlas credentials never touch a git-tracked file.
+
 builder.Services.AddSingleton<IMongoClient>(_ =>
 {
     string connectionString = builder.Configuration["MongoDb:ConnectionString"];
