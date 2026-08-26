@@ -7,34 +7,38 @@ namespace BankApi.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly Bank _bank;
+    private readonly ICustomerRepository _customerRepository;
 
-    public AuthController(Bank bank)
+    public AuthController(Bank bank, ICustomerRepository customerRepository)
     {
         _bank = bank;
+        _customerRepository = customerRepository;
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         if (request == null || string.IsNullOrWhiteSpace(request.Username) || string.IsNullOrWhiteSpace(request.Password))
         {
             return BadRequest("Username and password are required.");
         }
 
+        // Admins and the in-memory seeded customers live in Bank; customers
+        // registered through POST /api/v1/customers only exist in MongoDB,
+        // so fall back to checking there if Bank doesn't recognize them.
         User user = _bank.Authenticate(request.Username, request.Password);
-
-        if (user == null)
+        if (user != null)
         {
-            return Unauthorized("Invalid username or password.");
+            return Ok(new LoginResponse { Username = user.Username, Role = user.GetRole() });
         }
 
-        var response = new LoginResponse
+        CustomerDocument customer = await _customerRepository.GetByUsernameAsync(request.Username);
+        if (customer != null && customer.Password == request.Password)
         {
-            Username = user.Username,
-            Role = user.GetRole()
-        };
+            return Ok(new LoginResponse { Username = customer.Username, Role = "Customer" });
+        }
 
-        return Ok(response);
+        return Unauthorized("Invalid username or password.");
     }
 }
 
