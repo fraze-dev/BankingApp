@@ -38,7 +38,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(FrontendCorsPolicy, policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "https://localhost:5173")
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "https://localhost:5173",
+                "http://student-aaron-fraze-bankapi-frontend.s3-website-us-east-1.amazonaws.com")
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
