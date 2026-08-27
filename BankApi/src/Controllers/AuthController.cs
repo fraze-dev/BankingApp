@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
         }
 
         CustomerDocument customer = await _customerRepository.GetByUsernameAsync(request.Username);
-        if (customer != null && customer.Password == request.Password)
+        if (customer != null && PasswordUtil.Verify(customer.Password, request.Password))
         {
             return Ok(new LoginResponse { Username = customer.Username, Role = "Customer" });
         }

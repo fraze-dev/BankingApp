@@ -67,3 +67,41 @@ GET {{BankApi_HostAddress}}/api/v1/accounts/customer/jsmith
 GET {{BankApi_HostAddress}}/api/v1/accounts/customer/ghost
 
 ###
+
+###
+
+POST {{BankApi_HostAddress}}/api/v1/customers
+Content-Type: application/json
+
+{
+  "username": "hashtest1",
+  "password": "testpass1"
+}
+
+###
+
+POST {{BankApi_HostAddress}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "hashtest1",
+  "password": "testpass1"
+}
+
+POST {https://wkrrnjur16.execute-api.us-east-1.amazonaws.com/api/v1/customers}
+Content-Type: application/json
+
+{
+  "username": "hashtest2",
+  "password": "testpass2"
+}
+
+###
+
+POST {https://wkrrnjur16.execute-api.us-east-1.amazonaws.com/api/v1/customers}
+Content-Type: application/json
+
+{
+  "username": "hashtest2",
+  "password": "testpass2"
+}

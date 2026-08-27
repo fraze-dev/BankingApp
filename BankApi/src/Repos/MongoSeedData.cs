@@ -24,13 +24,13 @@ public static class MongoSeedData
             new CustomerDocument
             {
                 Username = "jsmith",
-                Password = "pass123",
+                Password = PasswordUtil.Hash("pass123"),
                 AccountNumbers = new List<string> { "SAV-1001", "CHK-1001", "CHK-1002", "CHK-1003" }
             },
             new CustomerDocument
             {
                 Username = "agarcia",
-                Password = "pass456",
+                Password = PasswordUtil.Hash("pass456"),
                 AccountNumbers = new List<string> { "SAV-1002" }
             }
         });

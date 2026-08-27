@@ -67,7 +67,7 @@ public class CustomersController : ControllerBase
         var customer = new CustomerDocument
         {
             Username = request.Username,
-            Password = request.Password,
+            Password = PasswordUtil.Hash(request.Password),
             AccountNumbers = new List<string>()
         };
 
