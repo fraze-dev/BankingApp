@@ -1,3 +1,4 @@
+using Amazon.Lambda.AspNetCoreServer.Hosting;
 using BankApi;
 using MongoDB.Driver;
 
@@ -43,6 +44,13 @@ builder.Services.AddCors(options =>
     });
 });
 
+// --- Lambda wiring ---
+// When this app is actually running inside AWS Lambda (behind an API Gateway
+// HTTP API), AWS_LAMBDA_FUNCTION_NAME will be set in the environment and this
+// switches the app to Lambda's request pipeline instead of Kestrel. Locally,
+// that variable doesn't exist, so `dotnet run` behaves exactly as before.
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
+
 var app = builder.Build();
 
 // Seed the in-memory Bank (for Auth) and MongoDB (for Customers/Accounts)
@@ -62,7 +70,15 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+// API Gateway already terminates HTTPS before the request ever reaches
+// Lambda, so forcing an HTTPS redirect inside the function is unnecessary
+// and can misbehave (e.g. turning a POST into a broken redirect). Only
+// apply it when running locally under Kestrel.
+bool isRunningInLambda = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("AWS_LAMBDA_FUNCTION_NAME"));
+if (!isRunningInLambda)
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors(FrontendCorsPolicy);
 
